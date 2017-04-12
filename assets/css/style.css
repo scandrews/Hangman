@@ -1,0 +1,41 @@
+/** style sheet for the hangman game **/
+
+.header{
+	text-align: center;
+	font-size: 100px;
+	font-family: PT Serif;
+}
+
+.mainbox{
+/**	border: solid 2px blue;	**/
+	width: 980px;
+	margin: 100px 1px 1px 10px;
+	padding: 5px;
+}
+
+.left-box{
+	width: 50px;
+}
+.image-box{
+/**	border: solid 2px green; **/
+	width: 300px;
+	margin: 10px 5px 10px 5px;
+}
+
+.game-box{
+/**	border: solid 2px orange;	**/
+	margin: 10px 5px 10px 5px;
+}
+
+#uppertext{
+	font-size: 20px;
+	font-family: "Lucida Bright", Georgia, serif;
+}
+
+#progressMessage{
+	font-size: 20px;
+	font-family: "Lucida Bright", Georgia, serif;
+}
+#newgame{
+	font-size: 23px;
+}

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="UTF-8">
+		<title>Hangman Game</title>
+
+		<link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+			crossorigin="anonymous">
+		<link rel="stylesheet" href="assets/css/style.css">
+<!--		<link rel="javascript" href="assets/javascript/game.js">	-->
+	</head>
+
+	<body>
+		<div class="container">
+
+			<!-- This section is the header -->
+			<div class="header">
+				<div>HANGMAN</div>
+			</div>
+
+			<!-- This is the main content section -->
+			<div class="mainbox">
+				<div class="row">
+					<div class="col-md-1"></div> <!-- for padding-->
+					<!-- this is the left side box for pic -->
+					<div class="col-md-6 image-box">
+						<img src="assets/images/hangman-0.png" class="picbox" alt="Hangman picture" name="hangpic">
+					</div>
+					<div class="col-md-6 game-box">
+						<p id="uppertext">I know a word, Guess a letter to start</p>
+						<p></p>
+<!--						<p id="progressMessage"></p>
+						<p></p>	-->
+						<p id="wordText">     _  _  _  _  _  _ </p>
+						<p id="wrongProgress"> </p>
+						<p id="errortext">  </p>
+						<p id="newgame">  </p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+
+// This javascript code i found on the net, I don't know how it works
+          function MM_findObj(n, d) { //v4.01
+              var p,i,x;
+              if(!d) d=document;
+              	if((p=n.indexOf("?"))>0&&parent.frames.length) {
+                  d=parent.frames[n.substring(p+1)].document;
+                  n=n.substring(0,p);
+              	}
+                if(!(x=d[n])&&d.all)
+                	x=d.all[n];
+                	for (i=0; !x&&i<d.forms.length; i++)
+                		x=d.forms[i][n];
+                  		for(i=0; !x&&d.layers && i<d.layers.length; i++)
+                  			x=MM_findObj (n,d.layers[i].document);
+			                if(!x && d.getElementById)
+			                	x=d.getElementById(n);
+			                	return x;
+          }
+
+         function MM_swapImage() { //v3.0
+              var i, j=0, x, a=MM_swapImage.arguments;
+              	document.MM_sr=new Array;
+                for(i=0; i<(a.length-2); i+=3)
+                    if ((x=MM_findObj(a[i]))!=null){
+                        document.MM_sr[j++]=x;
+                        if(!x.oSrc)
+                        	x.oSrc=x.src;
+                        	x.src=a[i+2];
+                      }
+          }
+ //  end of imported java code, the following code I wrote
+
+
+	// arrary to hold correctly quessed letters
+	var correctGuesses = ["_","_","_","_"];
+	var wrongGuesses = [];		
+	// objects holding possible words to guess
+	var possiblewords = [
+		["m","o","n","e","y"],
+		["m","o","n","k","e","y"],
+		["a","b","o","u","t"],
+		["p","e","r","m","i","t"],
+		["r","e","p","o","r","t"],
+		["a","p","p","e","a","r"],
+		["t","r","a","v","e","l"],
+		["d","e","c","l","a","r","e"],
+		["c","o","n","f","u","s","e"]
+//		"rabit",
+//		"world",
+//		"book",
+		];
+
+	if(true){
+	// generates the word to guess
+	var guessword = possiblewords[Math.floor(Math.random() * possiblewords.length)];
+	console.log(guessword);
+
+	// this loop fills the correct guesses array with "_"
+	for(i=0; i<guessword.length; i++){
+		correctGuesses[i] = "_";
+	}
+
+    // function runs every time a key is pressed
+    document.onkeyup = function(event){
+		//loads pressed key into variable
+		var entry = event.key;
+
+		// check to see if the letter has already been tried
+		if ((correctGuesses.indexOf(entry) === -1) && (wrongGuesses.indexOf(entry) === -1)){
+
+			// not a repeat letter, proceed to analize
+			// returns the index into the guessword -1 if not there
+			var	letterlocation = guessword.indexOf(entry);
+
+//			console.log(letterlocation);
+
+			if (letterlocation === -1){
+
+					// guess was not in the word - wrong guess handling starts here
+					wrongGuesses.push(entry);
+//					console.log(wrongGuesses);
+
+					// write to the screen about the incorrect letter
+					var html = "<p>Sorry, wrong guess " + entry + " please try another letter</p>";
+					document.querySelector("#uppertext").innerHTML = html;
+
+					var errormessage = "<p>Incorrect Guesses</p>";
+					document.querySelector("#wrongProgress").innerHTML = errormessage;
+
+					var errormessage = "<p>" + wrongGuesses + "</p>";
+					document.querySelector("#errortext").innerHTML = errormessage;
+
+//					var errorList = wrongGuesses;
+//					document.querySelector("#errortext").innerHTML = errorList;
+
+					// change the hangman pic on right
+					if (wrongGuesses.length === 1){
+						MM_swapImage('hangpic','','assets/images/hangman-1.png',1);
+					}
+					if (wrongGuesses.length === 2){
+						MM_swapImage('hangpic','','assets/images/hangman-2.png',1);
+					}
+					if (wrongGuesses.length === 3){
+						MM_swapImage('hangpic','','assets/images/hangman-3.png',1);
+					}
+					if (wrongGuesses.length === 4){
+						MM_swapImage('hangpic','','assets/images/hangman-4.png',1);
+					}
+					if (wrongGuesses.length === 5){
+						MM_swapImage('hangpic','','assets/images/hangman-5.png',1);
+					}
+					if (wrongGuesses.length === 6){
+						MM_swapImage('hangpic','','assets/images/hangman-full.png',1);
+						var screentext = "<p>Sorry, You Lost</p>";
+						document.querySelector("#uppertext").innerHTML = screentext;
+					}
+//				if(wrongGuesses.length === 6){
+//					}
+				// close wrong guess processing
+
+					// correct guess, store in array
+			}	else {
+				console.log("correct guess!!!")
+					correctGuesses[letterlocation] = entry;
+					// console.log("Wtf 2");
+					// check for a second occurrance of letter in the word
+					var	letterlocation = guessword.indexOf(entry, start=letterlocation+1);
+					if (letterlocation > 0){
+						//	console.log("WTF " + " letterlocation = " + letterlocation);
+						// yes was a second occurance
+						correctGuesses[letterlocation] = entry;
+					}
+
+					// write the array to the screen
+					var newscreentext = "<p>Good guess " + entry + "</p>";
+					document.querySelector("#uppertext").innerHTML = newscreentext;
+					var newscreentext = correctGuesses;
+					document.querySelector("#wordText").innerHTML = newscreentext;
+					
+					//for error check
+					var newscreentext = guessword;
+					document.querySelector("#newgame").innerHTML = newscreentext;
+				
+
+
+					// Check if we won
+					console.log("check to see if we won");
+					
+					console.log(correctGuesses);
+					console.log(guessword);
+					debugger
+					var match = true;
+					if(correctGuesses.length === guessword.length){
+						for (var i = 0; i <correctGuesses.length; i++) {
+
+							if(correctGuesses[i] !== guessword[i]){
+								match = false;
+							}
+
+						
+						}
+					}
+					
+					if (match){
+						console.log("matching- word found")
+//					var won = true	;
+///					var reallywon = false;
+//					for(i=0; (won=true && i<guessword.length); i++){
+//						won = (correctGuesses[i] === guessword[i]);
+//						reallywon = won;
+//						console.log(won);
+					
+//						console.log(reallywon);
+//					if (reallywon){
+
+						console.log("congratulations, you won");
+						var screentext = ("Congratulations, You Won");
+						document.querySelector("#uppertext").innerHTML = screentext;
+					} else {
+						console.log("checked but didn't get a winning match");
+						// close correct guess processing
+					}
+			}
+
+					console.log("wrong gresses " + wrongGuesses);
+					console.log("correct guesses " + correctGuesses);
+					console.log("guessword " + guessword);
+		
+			// end new letter pressed processing
+		
+			//letter was already pressed
+		}	else{
+				var newscreenmsg = "<p>" + entry + " was already pressed</p>";
+				document.querySelector("#uppertext").innerHTML = newscreenmsg;
+		}
+
+
+	if(wrongGuesses.length === 6 || correctGuesses == guessword){
+		var screentext = "<p> Game Over, Press Any Key To Play Again</p>";
+		document.querySelector("#newgame").innerHTML = screentext;
+	}
+	}	// key press event handler
+}
+		</script>
+
+	</body>
+</html>
