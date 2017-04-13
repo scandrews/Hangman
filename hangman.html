@@ -161,19 +161,13 @@
 						var screentext = "<p>Sorry, You Lost</p>";
 						document.querySelector("#uppertext").innerHTML = screentext;
 					}
-//				if(wrongGuesses.length === 6){
-//					}
-				// close wrong guess processing
-
-					// correct guess, store in array
 			}	else {
+					// a correct guess, correct guess handling starts here
 				console.log("correct guess!!!")
 					correctGuesses[letterlocation] = entry;
-					// console.log("Wtf 2");
 					// check for a second occurrance of letter in the word
 					var	letterlocation = guessword.indexOf(entry, start=letterlocation+1);
 					if (letterlocation > 0){
-						//	console.log("WTF " + " letterlocation = " + letterlocation);
 						// yes was a second occurance
 						correctGuesses[letterlocation] = entry;
 					}
@@ -184,37 +178,17 @@
 					var newscreentext = correctGuesses;
 					document.querySelector("#wordText").innerHTML = newscreentext;
 					
-					//for error check
-					var newscreentext = guessword;
-					document.querySelector("#newgame").innerHTML = newscreentext;
-				
-
-
+					
 					// Check if we won
 					console.log("check to see if we won");
+					console.log("wrong gresses " + wrongGuesses);
+					console.log("correct guesses " + correctGuesses);
+					console.log("guessword " + guessword);
 					
-					console.log(correctGuesses);
-					console.log(guessword);
-					debugger
-					var match = true;
-					if(correctGuesses.length === guessword.length){
-						for (var i = 0; i <correctGuesses.length; i++) {
-
-							if(correctGuesses[i] !== guessword[i]){
-								match = false;
-							}
-
-						
-						}
-					}
-					
-					if (match){
-						console.log("matching- word found")
+					if (correctGuesses == guessword){
 //					var won = true	;
-///					var reallywon = false;
-//					for(i=0; (won=true && i<guessword.length); i++){
+//					for(i=0;  i<guessword.length; i++){
 //						won = (correctGuesses[i] === guessword[i]);
-//						reallywon = won;
 //						console.log(won);
 					
 //						console.log(reallywon);
@@ -225,21 +199,16 @@
 						document.querySelector("#uppertext").innerHTML = screentext;
 					} else {
 						console.log("checked but didn't get a winning match");
+						}
 						// close correct guess processing
-					}
 			}
-
-					console.log("wrong gresses " + wrongGuesses);
-					console.log("correct guesses " + correctGuesses);
-					console.log("guessword " + guessword);
-		
 			// end new letter pressed processing
 		
 			//letter was already pressed
 		}	else{
 				var newscreenmsg = "<p>" + entry + " was already pressed</p>";
 				document.querySelector("#uppertext").innerHTML = newscreenmsg;
-		}
+				}
 
 
 	if(wrongGuesses.length === 6 || correctGuesses == guessword){
